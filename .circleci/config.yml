@@ -1,4 +1,6 @@
 version: 2 # use CircleCI 2.0
+orbs:
+  allure: ayte/allure@0.1.2
 jobs:
   build:
     docker:
@@ -23,10 +25,15 @@ jobs:
       - run:
           name: Run tests
           # Runs jest with "--maxWorkers=2" argument to avoid OOM issues
-          command: npm test # replace with `yarn test` if using yarn
+          command: npm test --reporters=allure --maxInstances=1 # replace with `yarn test` if using yarn
+
+      - run:
+          name: Generate report
+          command: npm run allure generate
+          # command: npm run report:generate
 
       - store_artifacts: 
-          path: test-results
+          path: ./allure-report
 
       - store_test_results:
           path: test-results

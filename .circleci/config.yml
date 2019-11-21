@@ -32,8 +32,6 @@ jobs:
           # command: allure generate
           command: npm run report:generate
 
-      - allure/report
-
       - store_artifacts: 
           path: ./allure-report
 

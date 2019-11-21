@@ -8,7 +8,7 @@ jobs:
 
       - restore_cache: # special step to restore the dependency cache
           # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
-          keys: 
+          keys:
             - v1-repo-{{ checksum "package-lock.json" }}
 
       - run:
@@ -21,11 +21,12 @@ jobs:
             - "node_modules"
 
       - run:
-          name: Run tests
-          # Runs jest with "--maxWorkers=2" argument to avoid OOM issues
-          command: npm test # replace with `yarn test` if using yarn
+          name: Run tests with JUnit as reporter
+          command: jest --ci --runInBand --reporters=default --reporters=jest-junit
+          environment:
+            JEST_JUNIT_OUTPUT_DIR: "reports/junit/js-test-results.xml"
 
-      - store_artifacts: 
+      - store_artifacts:
           path: test-results
 
       - store_test_results:

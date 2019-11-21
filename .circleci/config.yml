@@ -25,16 +25,17 @@ jobs:
       - run:
           name: Run tests
           # Runs jest with "--maxWorkers=2" argument to avoid OOM issues
-          command: npm test # replace with `yarn test` if using yarn
+          command: npm test --reporters=allure --maxInstances=1 # replace with `yarn test` if using yarn
 
       - run:
           name: Generate report
-          command: allure generate
+          # command: allure generate
+          command: npm run report:generate
 
       - allure/report
-      
+
       - store_artifacts: 
-          path: test-results
+          path: ./allure-report
 
       - store_test_results:
           path: test-results

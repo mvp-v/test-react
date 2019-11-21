@@ -1,4 +1,6 @@
 version: 2 # use CircleCI 2.0
+orbs:
+  allure: ayte/allure@0.1.2
 jobs:
   build:
     docker:
@@ -26,15 +28,11 @@ jobs:
           command: npm test # replace with `yarn test` if using yarn
 
       - run:
-          name: Install JUnit coverage reporter
-          command: yarn add --dev jest-junit
+          name: Generate report
+          command: allure generate
 
-      - run:
-          name: Run tests with JUnit as reporter
-          command: jest --ci --runInBand --reporters=default --reporters=jest-junit
-          environment:
-            JEST_JUNIT_OUTPUT_DIR: "reports/junit/js-test-results.xml"
-
+      - allure/report
+      
       - store_artifacts: 
           path: test-results
 
